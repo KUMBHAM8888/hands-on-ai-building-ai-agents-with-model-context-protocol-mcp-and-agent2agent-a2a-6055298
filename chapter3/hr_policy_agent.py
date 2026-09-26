@@ -4,7 +4,7 @@ from mcp.client.stdio import stdio_client
 from langchain_mcp_adapters.tools import load_mcp_tools
 from langchain_mcp_adapters.prompts import load_mcp_prompt
 from langgraph.prebuilt import create_react_agent
-from langchain_openai import AzureChatOpenAI
+from langchain_openai import ChatOpenAI
 
 import asyncio
 import os
@@ -14,20 +14,15 @@ load_dotenv()
 
 #-----------------------------------------------------------------------
 # Setup the LLM for the HR Policy Agent
-# This uses the Azure OpenAI service with a specific deployment
+# This uses any OpenAI-compatible API (Groq, OpenAI, ...) configured in .env
 # Please replace the environment variables with your own values
 #-----------------------------------------------------------------------
 
-endpoint = os.getenv("ENDPOINT_URL")
-deployment = os.getenv("DEPLOYMENT_NAME")
-subscription_key = os.getenv("AZURE_OPENAI_API_KEY")
-api_version=os.getenv("API_VERSION")
 
-model=AzureChatOpenAI(
-    azure_endpoint=endpoint,
-    api_key=subscription_key,
-    api_version=api_version,
-    deployment_name=deployment,
+model=ChatOpenAI(
+    model=os.getenv("MODEL_NAME"),
+    api_key=os.getenv("OPENAI_API_KEY"),
+    base_url=os.getenv("OPENAI_BASE_URL"),
 )
 
 #-----------------------------------------------------------------------

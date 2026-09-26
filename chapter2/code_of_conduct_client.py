@@ -3,7 +3,7 @@ from mcp.client.stdio import stdio_client
 
 from langchain_mcp_adapters.tools import load_mcp_tools
 from langchain_mcp_adapters.resources import load_mcp_resources
-from langchain_openai import AzureChatOpenAI
+from langchain_openai import ChatOpenAI
 from langchain_core.messages import AIMessage
 
 import asyncio
@@ -22,18 +22,13 @@ server_params = StdioServerParameters(
 )
 
 #-----------------------------------------------------------------------
-#Setup the Azure OpenAI model
+#Setup the LLM (provider, key and model come from .env)
 #-----------------------------------------------------------------------
-endpoint = os.getenv("ENDPOINT_URL")
-deployment = os.getenv("DEPLOYMENT_NAME")
-subscription_key = os.getenv("AZURE_OPENAI_API_KEY")
-api_version=os.getenv("API_VERSION")
 
-model=AzureChatOpenAI(
-    azure_endpoint=endpoint,
-    api_key=subscription_key,
-    api_version=api_version,
-    deployment_name=deployment,
+model=ChatOpenAI(
+    model=os.getenv("MODEL_NAME"),
+    api_key=os.getenv("OPENAI_API_KEY"),
+    base_url=os.getenv("OPENAI_BASE_URL"),
 )
 
 #-----------------------------------------------------------------------
